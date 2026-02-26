@@ -1,0 +1,53 @@
+.login-container {
+  max-width: 400px;
+  margin: 2.5rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: var(--mat-sys-primary);
+  }
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 1.0rem;
+  }
+
+  button[mat-raised-button] {
+    width: 100%;
+    padding: 0.7rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: filter 0.2s ease;
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+
+  .reset-link {
+    text-align: center;
+    margin-top: 2.0rem;
+    color: var(--mat-sys-primary);
+    cursor: pointer;
+    font-weight: 200;
+    font-size: 0.9rem;
+    text-decoration: underline;
+  }
+
+  .reset-link:hover {
+    filter: brightness(0.9);
+  }
+
+  .error {
+    color: var(--mat-sys-error);
+    margin-top: 1rem;
+    text-align: center;
+  }
+}

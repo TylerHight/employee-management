@@ -1,0 +1,16 @@
+.home-container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h2 {
+  font-weight: 600;
+  color: var(--mat-sys-primary);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--mat-sys-on-surface);
+}

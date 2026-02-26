@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-ui
+  template:
+    metadata:
+      labels:
+        app: angular-ui
+    spec:
+      containers:
+        - name: angular-ui
+          image: docker.io/tylerhight/angular-ui:1.1.7
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: angular-ui-config
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10

@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-content>
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="!loading && error" class="error">
+      {{ error }}
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" *ngIf="!loading && !error && data.length > 0">
+      <table mat-table [dataSource]="data" class="mat-elevation-z2">
+
+        <!-- Dynamic columns -->
+        <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
+          <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row[col.key] }}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell class="actions-header" *matHeaderCellDef>Actions</th>
+          <td mat-cell class="actions-cell" *matCellDef="let row">
+            <div class="actions-wrapper">
+              <ng-container *ngIf="actionsTemplate">
+                <ng-container *ngTemplateOutlet="actionsTemplate; context: {$implicit: row}"></ng-container>
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnKeys"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnKeys"></tr>
+      </table>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && !error && data.length === 0" class="empty-message">
+      {{ emptyMessage }}
+    </div>
+  </mat-card-content>
+  <mat-paginator [length]="totalItems" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</mat-card>

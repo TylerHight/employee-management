@@ -1,0 +1,59 @@
+.profile-wrapper {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+mat-card {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  border-bottom: 1px solid var(--mat-sys-outline);
+  position: relative; /* allow absolute positioning of button */
+  padding-right: 8rem; /* space so title doesn't overlap button */
+}
+
+.profile-avatar {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn {
+  position: absolute;
+  top: 1.0rem;
+  right: 0.9rem;
+  font-weight: 600;
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+
+  td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--mat-sys-outline);
+  }
+
+  td:first-child {
+    font-weight: bold;
+    width: 150px;
+    color: var(--mat-sys-primary);
+  }
+}
+
+.loading {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.error {
+  color: var(--mat-sys-error);
+  text-align: center;
+  margin-top: 1rem;
+}

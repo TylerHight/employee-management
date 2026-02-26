@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Deployment packages
+*.zip
+
+# Lambda layer build output
+pymysql_layer/
+python/
+python/lib/
+python/lib64/
+
+# SSL certificates (download when needed)
+global-bundle.pem
+
+# OS / editor files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,109 @@
+<mat-card class="employee-form-card" [ngClass]="{
+    'registration-mode': data.mode === 'registration',
+    'full-page': data.mode === 'registration' && !dialogRef
+  }">
+  <mat-card-header>
+    <mat-card-title>{{ getFormTitle() }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-grid">
+        <!-- First Name -->
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="firstName" />
+          <mat-error *ngIf="form.get('firstName')?.invalid">
+            First name is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Last Name -->
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="lastName" />
+          <mat-error *ngIf="form.get('lastName')?.invalid">
+            Last name is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Role -->
+        <mat-form-field appearance="outline" *ngIf="!form.get('role')?.disabled">
+          <mat-label>Role</mat-label>
+          <mat-icon matPrefix>supervisor_account</mat-icon>
+          <mat-select formControlName="role">
+            <mat-option value="USER">User</mat-option>
+            <mat-option value="ADMIN">Admin</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Address -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="data.mode !== 'registration'">
+          <mat-label>Address</mat-label>
+          <mat-icon matPrefix>home</mat-icon>
+          <input matInput formControlName="address" />
+        </mat-form-field>
+
+        <!-- City -->
+        <mat-form-field appearance="outline" *ngIf="data.mode !== 'registration'">
+          <mat-label>City</mat-label>
+          <mat-icon matPrefix>location_city</mat-icon>
+          <input matInput formControlName="city" />
+        </mat-form-field>
+
+        <!-- State -->
+        <mat-form-field appearance="outline" *ngIf="data.mode !== 'registration'">
+          <mat-label>State</mat-label>
+          <mat-icon matPrefix>map</mat-icon>
+          <mat-select formControlName="state">
+            <mat-option *ngFor="let state of states" [value]="state.code">
+              {{ state.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Zip -->
+        <mat-form-field appearance="outline" *ngIf="data.mode !== 'registration'">
+          <mat-label>Zip</mat-label>
+          <mat-icon matPrefix>location_on</mat-icon>
+          <input matInput formControlName="zip" />
+        </mat-form-field>
+
+        <!-- Cell Phone -->
+        <mat-form-field appearance="outline" *ngIf="data.mode !== 'registration'">
+          <mat-label>Cell Phone</mat-label>
+          <mat-icon matPrefix>phone_iphone</mat-icon>
+          <input matInput formControlName="cellPhone" />
+        </mat-form-field>
+
+        <!-- Home Phone -->
+        <mat-form-field appearance="outline" *ngIf="data.mode !== 'registration'">
+          <mat-label>Home Phone</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput formControlName="homePhone" />
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          <mat-icon>{{ data.mode === 'registration' ? 'send' : 'save' }}</mat-icon>
+          {{ data.mode === 'registration' ? 'Submit' : 'Save' }}
+        </button>
+        <button mat-raised-button color="warn" type="button" (click)="cancel()">
+          <mat-icon>cancel</mat-icon>
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,52 @@
+<div class="admin-employee-list">
+  <mat-card>
+    <mat-card-header>
+      <div class="header-left">
+        <mat-card-title class="employee-header-title">Employee Information</mat-card-title>
+      </div>
+
+      <div class="header-right">
+        <button mat-stroked-button color="primary" class="add-btn" (click)="openAddEmployeeDialog()">
+          <mat-icon>person_add</mat-icon>
+          Add Employee
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <!-- Search row (aligned right) -->
+      <div class="search-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search Employees</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+
+          <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()"
+            placeholder="Search by name, role...">
+
+          <button *ngIf="searchTerm" matSuffix mat-icon-button (click)="searchTerm=''; onSearchChange()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+
+      <admin-data-table [columns]="columns" [data]="employees" [loading]="loading" [error]="error"
+        [emptyMessage]="'No employees found.'" [totalItems]="totalItems" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" [actionsTemplate]="actionsTemplate" (pageChange)="onPageChange($event)"
+        (editRow)="openEditEmployeeDialog($event)" (deleteRow)="deleteEmployee($event.id)">
+      </admin-data-table>
+
+      <ng-template #actionsTemplate let-row>
+        <button mat-icon-button color="accent" (click)="openEditEmployeeDialog(row)" matTooltip="Edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="deleteEmployee(row.id)" matTooltip="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-template>
+
+    </mat-card-content>
+  </mat-card>
+</div>

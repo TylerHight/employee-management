@@ -1,0 +1,77 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: var(--mat-sys-primary);
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  filter: brightness(0.7); /* darken 10% */
+  transition: filter 0.3s ease; /* smooth effect */
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-actions button {
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  border: none;
+  padding: 0.25rem 0.75rem;
+  margin-left: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: none; /* Keep normal casing */
+}
+
+.sign-in-btn {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  border-radius: 20px; /* Fully rounded pill style */
+  padding: 0.4rem 1rem; /* Extra padding for pill shape */
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+}
+
+.navbar-actions button:hover {
+  background: transparent;
+  color: var(--mat-sys-primary);
+  text-decoration: underline;
+}
+
+.theme-toggle-btn {
+  background: transparent !important;
+  min-width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 17px; /* smaller icon without affecting button box */
+    color: var(--mat-sys-on-surface);
+  }
+
+  &:hover mat-icon {
+    color: var(--mat-sys-primary);
+  }
+}
+

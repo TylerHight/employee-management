@@ -1,0 +1,73 @@
+/* Adjustable search field height */
+$search-height: 22px; // <--- Change this to any height (min ~22px)
+
+.admin-employee-list {
+  max-width: 1000px;
+  margin: 1rem auto;
+
+  mat-card {
+    background-color: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+  }
+
+  /* HEADER: title left + button right */
+  mat-card-header {
+    display: flex;
+    justify-content: space-between; /* title left, button right */
+    align-items: center;
+
+    padding-bottom: 0.8rem; /* spacing above line */
+    border-bottom: 1px solid var(--mat-sys-outline);
+    margin-bottom: 1rem;
+
+    .employee-header-title {
+      text-align: left;
+      font-size: 20px;
+      font-weight: 500;
+      margin-left: 0.4rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      margin-right: auto; /* <-- Forces title to stay left */
+    }
+  }
+
+  /* SEARCH ROW (below the header, aligned right) */
+  .search-row {
+    display: flex;
+    justify-content: flex-start; /* search bar on the right */
+    margin-bottom: -2rem;
+  }
+
+  /* Search field styling */
+  .search-field {
+    width: 240px;
+    margin-left: 0.2rem;
+
+    --mat-form-field-density: -5;
+
+    .mat-mdc-text-field-wrapper {
+      height: $search-height;
+      padding: 0;
+    }
+
+    .mat-mdc-form-field-flex {
+      height: $search-height;
+      align-items: center;
+    }
+
+    input {
+      height: $search-height;
+      line-height: $search-height;
+      padding: 0 8px;
+      box-sizing: border-box;
+    }
+  }
+
+  /* Button styling */
+  .add-btn {
+    white-space: nowrap;
+  }
+}

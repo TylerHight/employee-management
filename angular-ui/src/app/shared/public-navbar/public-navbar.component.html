@@ -1,0 +1,26 @@
+<nav class="navbar">
+  <div class="navbar-brand" routerLink="/">FSCC</div>
+  <div class="navbar-actions">
+    <button 
+      mat-button 
+      (click)="openRegistrationDialog()" 
+      data-test="navbar-register-button">
+      Register
+    </button>
+    <button 
+      mat-button 
+      routerLink="/login" 
+      class="sign-in-btn" 
+      data-test="navbar-sign-in-button">
+      Sign in
+    </button>
+    <button 
+      mat-icon-button 
+      class="theme-toggle-btn" 
+      (click)="toggleTheme()" 
+      disableRipple
+      data-test="navbar-theme-toggle">
+      <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+  </div>
+</nav>

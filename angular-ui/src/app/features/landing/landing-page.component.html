@@ -1,0 +1,42 @@
+<public-navbar></public-navbar>
+
+<main>
+  <section class="hero" id="hero-section" aria-labelledby="landing-title">
+    <div class="hero-content">
+      <h1 id="landing-title" data-test="landing-title">FSCC Employee Management</h1>
+      <p data-test="landing-subtitle">Manage your profile, track approvals, and more.</p>
+      <div class="hero-actions">
+        <button 
+          (click)="openRegistrationDialog()" 
+          class="btn-secondary" 
+          data-test="landing-register-button"
+          aria-label="Open registration form">
+          Register
+        </button>
+
+        <button 
+          routerLink="/login" 
+          class="btn-primary" 
+          data-test="landing-sign-in-button"
+          aria-label="Sign in to your account">
+          Sign in
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features-section" aria-label="Application features">
+    <div class="feature" data-test="feature-registration">
+      <h3>Easy Registration</h3>
+      <p>Submit your details for approval quickly and easily.</p>
+    </div>
+    <div class="feature" data-test="feature-login">
+      <h3>Secure Login</h3>
+      <p>Access your employee dashboard safely with JWT authentication.</p>
+    </div>
+    <div class="feature" data-test="feature-admin-tools">
+      <h3>Admin Tools</h3>
+      <p>Admins can approve registrations and manage employee profiles.</p>
+    </div>
+  </section>
+</main>

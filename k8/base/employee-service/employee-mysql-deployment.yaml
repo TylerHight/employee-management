@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-mysql
+spec:
+  selector:
+    matchLabels:
+      app: employee-mysql
+  template:
+    metadata:
+      labels:
+        app: employee-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: docker.io/library/mysql:8.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - secretRef:
+            name: employee-mysql-secret
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        readinessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-h", "localhost"]
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-h", "localhost"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: employee-mysql-pvc
+      - name: mysql-initdb
+        configMap:
+          name: employee-mysql-initdb-config

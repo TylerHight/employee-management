@@ -1,0 +1,75 @@
+resources:
+  # AKHQ (Kafka UI)
+  - akhq/deployment.yaml
+  - akhq/service.yaml
+
+  # Angular UI
+  - angular-ui/configmap.yaml
+  - angular-ui/deployment.yaml
+  - angular-ui/service.yaml
+  - angular-ui/angular-ui-ingress.yaml
+
+  # API Gateway
+  - api-gateway/api-gateway-ingress.yaml
+  - api-gateway/configmap.yaml
+  - api-gateway/deployment.yaml
+  - api-gateway/service.yaml
+
+  # Audit Service
+  - audit-service/audit-postgres-secret.yaml
+  - audit-service/audit-postgres-pvc.yaml
+  - audit-service/audit-postgres-deployment.yaml
+  - audit-service/audit-postgres-service.yaml
+  - audit-service/configmap.yaml
+  - audit-service/deployment.yaml
+  - audit-service/service.yaml
+
+  # Discovery Service
+  - discovery-service/configmap.yaml
+  - discovery-service/deployment.yaml
+  - discovery-service/service.yaml
+
+  # Employee Service
+  - employee-service/configmap.yaml
+  - employee-service/deployment.yaml
+  - employee-service/employee-mysql-deployment.yaml
+  - employee-service/employee-mysql-initdb-config.yaml
+  - employee-service/employee-mysql-pvc.yaml
+  - employee-service/employee-mysql-secret.yaml
+  - employee-service/employee-mysql-service.yaml
+  - employee-service/service.yaml
+
+  # Kafka
+  - kafka/kafka-pvc.yaml
+  - kafka/kafka.yaml
+
+  # Login Service
+  - login-service/configmap.yaml
+  - login-service/login-service-config.yaml
+  - login-service/deployment.yaml
+  - login-service/mysql-deployment.yaml
+  - login-service/mysql-pvc.yaml
+  - login-service/mysql-secret.yaml
+  - login-service/mysql-service.yaml
+  - login-service/service.yaml
+
+  # Notification Service
+  - notification-service/deployment.yaml
+  - notification-service/notification-service-config.yaml
+  - notification-service/notification-service-secret.yaml
+  - notification-service/service.yaml
+
+  # Registration MongoDB
+  - registration-mongodb/deployment.yaml
+  - registration-mongodb/mongodb-pvc.yaml
+  - registration-mongodb/mongodb-secret.yaml
+  - registration-mongodb/service.yaml
+
+  # Registration Service
+  - registration-service/configmap.yaml
+  - registration-service/deployment.yaml
+  - registration-service/service.yaml
+
+  # Zookeeper
+  - zookeeper/zookeeper-pvc.yaml
+  - zookeeper/zookeeper.yaml

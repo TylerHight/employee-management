@@ -1,0 +1,70 @@
+# ===== Maven / Spring Boot =====
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+.mvn/
+mvnw
+mvnw.cmd
+
+# ===== Node / Angular / React =====
+node_modules/
+dist/
+build/
+.tmp/
+.angular/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ===== Logs =====
+*.log
+logs/
+*.out
+
+# ===== IDE / Editor =====
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.groovylintrc.json
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+# VS Code
+.vscode/
+
+# ===== OS / Misc =====
+.DS_Store
+Thumbs.db
+continuation-prompt.md
+notes.txt
+
+# ===== Docker / Containers =====
+docker-compose.override.yml
+.env
+*.env
+
+# ===== Database dumps/backups =====
+*.sql.gz
+*.dump
+*.tar
+*.tar.gz

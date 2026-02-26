@@ -1,0 +1,142 @@
+name: Deploy Service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Service to build/deploy (e.g., login-service)"
+        required: true
+        type: string
+      version:
+        description: "Optional image version (leave blank to auto-generate later)"
+        required: false
+        type: string
+      target:
+        description: "Deployment target"
+        required: true
+        type: choice
+        options:
+          - minikube
+          - eks
+jobs:
+  preflight:
+    name: Preflight
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show event
+        run: echo "event_name=${{ github.event_name }}"
+
+      - name: Show manual inputs
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo "service=${{ github.event.inputs.service }}"
+          echo "version=${{ github.event.inputs.version }}"
+          echo "target=${{ github.event.inputs.target }}"
+
+      - name: Push event notice
+        if: ${{ github.event_name == 'push' }}
+        run: 'echo "Push trigger: no workflow_dispatch inputs provided."'
+
+  resolve-inputs:
+    name: Resolve Inputs
+    needs: preflight
+    runs-on: ubuntu-latest
+    outputs:
+      service: ${{ steps.resolve.outputs.service }}
+      version: ${{ steps.resolve.outputs.version }}
+      target: ${{ steps.resolve.outputs.target }}
+    steps:
+      - name: Resolve values
+        id: resolve
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "service=${{ github.event.inputs.service }}" >> "$GITHUB_OUTPUT"
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+            echo "target=${{ github.event.inputs.target }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "service=" >> "$GITHUB_OUTPUT"
+            echo "version=" >> "$GITHUB_OUTPUT"
+            echo "target=none" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Show resolved outputs
+        run: |
+          echo "service=${{ steps.resolve.outputs.service }}"
+          echo "version=${{ steps.resolve.outputs.version }}"
+          echo "target=${{ steps.resolve.outputs.target }}"
+
+  build-and-push:
+    name: Build and Push (Scaffold)
+    needs: resolve-inputs
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    outputs:
+      image_version: ${{ steps.meta.outputs.image_version }}
+      image_latest: ${{ steps.meta.outputs.image_latest }}
+      version: ${{ steps.meta.outputs.version }}
+      service: ${{ steps.meta.outputs.service }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate service folder
+        shell: bash
+        run: |
+          set -euo pipefail
+          service="${{ needs.resolve-inputs.outputs.service }}"
+          [[ -n "$service" ]] || { echo "::error::service is required"; exit 1; }
+          [[ -d "$service" ]] || { echo "::error::Directory '$service' not found"; exit 1; }
+
+      - name: Resolve image metadata
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          service="${{ needs.resolve-inputs.outputs.service }}"
+          version="${{ needs.resolve-inputs.outputs.version }}"
+
+          # Temporary fallback until auto-increment logic is added
+          if [[ -z "$version" ]]; then
+            version="0.0.${GITHUB_RUN_NUMBER}"
+          fi
+
+          image_version="docker.io/tylerhight/${service}:${version}"
+          image_latest="docker.io/tylerhight/${service}:latest"
+
+          echo "service=$service" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "image_version=$image_version" >> "$GITHUB_OUTPUT"
+          echo "image_latest=$image_latest" >> "$GITHUB_OUTPUT"
+
+      - name: Show plan
+        run: |
+          echo "service=${{ steps.meta.outputs.service }}"
+          echo "version=${{ steps.meta.outputs.version }}"
+          echo "image_version=${{ steps.meta.outputs.image_version }}"
+          echo "image_latest=${{ steps.meta.outputs.image_latest }}"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ steps.meta.outputs.service }}
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.image_version }}
+            ${{ steps.meta.outputs.image_latest }}
+
+
+
+

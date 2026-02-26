@@ -1,0 +1,50 @@
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  h1 {
+    margin-bottom: 24px;
+    font-size: 28px;
+    font-weight: 500;
+  }
+}
+
+.settings-card {
+  margin-bottom: 20px;
+  
+  mat-card-title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  mat-card-content {
+    padding: 16px 0;
+  }
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  span {
+    font-size: 16px;
+  }
+}
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  
+  button {
+    min-width: 120px;
+  }
+}

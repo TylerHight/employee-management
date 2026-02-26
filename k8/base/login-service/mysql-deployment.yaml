@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-mysql
+spec:
+  selector:
+    matchLabels:
+      app: login-mysql
+  template:
+    metadata:
+      labels:
+        app: login-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: docker.io/library/mysql:8
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - secretRef:
+            name: login-mysql-secret
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        readinessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-h", "localhost"]
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-h", "localhost"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: login-mysql-pvc
+      - name: mysql-initdb
+        configMap:
+          name: mysql-initdb-config

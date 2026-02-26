@@ -1,0 +1,20 @@
+.registration-container {
+  max-width: 800px;
+  margin: 0rem auto;
+  padding: 0rem;
+  background: transparent;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 0rem;
+    font-size: 2rem;
+    color: #333;
+  }
+
+  app-employee-form {
+    display: block;
+  }
+}
+

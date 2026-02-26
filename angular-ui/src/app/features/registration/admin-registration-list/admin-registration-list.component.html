@@ -1,0 +1,42 @@
+<div class="admin-registration-list">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registration List</mat-card-title>
+      <div class="header-actions">
+        <button mat-stroked-button color="primary" (click)="loadAll()">
+          View All
+        </button>
+        <button mat-stroked-button color="accent" (click)="loadPending()">
+          View Pending
+        </button>
+        <button mat-stroked-button color="warn" (click)="openAddRegistrationDialog()">
+          Add Registration
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <admin-data-table [columns]="columns" [data]="registrations" [loading]="loading" [error]="error"
+        emptyMessage="No registrations found." [actionsTemplate]="actionsTemplate">
+      </admin-data-table>
+
+
+      <ng-template #actionsTemplate let-row>
+        <!-- Approve -->
+        <button mat-icon-button color="primary" matTooltip="Approve" (click)="approve(row.email)" [disabled]="row.status !== 'PENDING'">
+          <mat-icon>check_circle</mat-icon>
+        </button>
+
+        <!-- Decline -->
+        <button mat-icon-button color="warn" matTooltip="Decline" (click)="decline(row.email)" [disabled]="row.status !== 'PENDING'">
+          <mat-icon>cancel</mat-icon>
+        </button>
+
+        <!-- Delete -->
+        <button mat-icon-button color="accent" matTooltip="Delete" (click)="deleteRegistration(row.email)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,32 @@
+<div class="profile-wrapper" *ngIf="!loading && employee">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar class="profile-avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <mat-card-title>{{ employee.firstName }} {{ employee.lastName }}</mat-card-title>
+      <mat-card-subtitle>{{ employee.role }}</mat-card-subtitle>
+
+      <!-- Full raised button in top right -->
+      <button mat-raised-button color="primary" class="edit-btn" (click)="editProfile()">
+        <mat-icon>edit</mat-icon>
+        Edit Profile
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <table class="profile-table">
+        <tr><td>Email:</td><td>{{ employee.email }}</td></tr>
+        <tr><td>Address:</td><td>{{ employee.address }}</td></tr>
+        <tr><td>City:</td><td>{{ employee.city }}</td></tr>
+        <tr><td>State:</td><td>{{ employee.state }}</td></tr>
+        <tr><td>Zip:</td><td>{{ employee.zip }}</td></tr>
+        <tr><td>Home Phone:</td><td>{{ employee.homePhone }}</td></tr>
+        <tr><td>Cell Phone:</td><td>{{ employee.cellPhone }}</td></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="loading" class="loading">Loading...</div>
+<div *ngIf="error" class="error">{{ error }}</div>

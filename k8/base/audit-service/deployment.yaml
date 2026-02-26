@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-service
+  labels:
+    app: audit-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audit-service
+  template:
+    metadata:
+      labels:
+        app: audit-service
+    spec:
+      containers:
+        - name: audit-service
+          image: docker.io/tylerhight/audit-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8084
+              name: http
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: SPRING_APPLICATION_NAME
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://audit-postgres:5432/auditdb
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: audit-postgres-secret
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: audit-postgres-secret
+                  key: password
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: SPRING_JPA_SHOW_SQL
+              value: "false"
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: SPRING_KAFKA_BOOTSTRAP_SERVERS
+            - name: AUDIT_KAFKA_TOPICS_AUDIT_EVENTS
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: AUDIT_KAFKA_TOPICS_AUDIT_EVENTS
+            - name: AUDIT_KAFKA_TOPICS_API_GATEWAY_EVENTS
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: AUDIT_KAFKA_TOPICS_API_GATEWAY_EVENTS
+            - name: AUDIT_KAFKA_TOPICS_AUTHENTICATION_EVENTS
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: AUDIT_KAFKA_TOPICS_AUTHENTICATION_EVENTS
+            - name: AUDIT_KAFKA_CONSUMER_GROUP_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: audit-service-config
+                  key: AUDIT_KAFKA_CONSUMER_GROUP_ID
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8084
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8084
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      restartPolicy: Always

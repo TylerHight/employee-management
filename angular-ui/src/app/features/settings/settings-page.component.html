@@ -1,0 +1,42 @@
+<div class="settings-container">
+  <h1>Settings</h1>
+  
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Notification Settings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="setting-item">
+        <span>Enable Notifications</span>
+        <mat-slide-toggle 
+          [checked]="notificationsEnabled"
+          (change)="toggleNotifications()">
+        </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Appearance</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="setting-item">
+        <span>Dark Mode</span>
+        <mat-slide-toggle 
+          [checked]="darkModeEnabled"
+          (change)="toggleDarkMode()">
+        </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="saveSettings()">
+      Save Settings
+    </button>
+    <button mat-button (click)="cancelSettings()">
+      Cancel
+    </button>
+  </div>
+</div>

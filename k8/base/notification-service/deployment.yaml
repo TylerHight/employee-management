@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: docker.io/tylerhight/notification-service:1.1.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            # App name
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-service-config
+                  key: SPRING_APPLICATION_NAME
+
+            # Eureka URL
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-service-config
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+
+            # Kafka bootstrap servers
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: kafka:29092
+
+            # Email credentials - These environment variables are referenced in application.properties
+            # as ${EMAIL_USERNAME}, ${EMAIL_PASSWORD}, and ${EMAIL_DEFAULT_SENDER}
+            - name: EMAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: notification-service-secret
+                  key: EMAIL_USERNAME
+            - name: EMAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: notification-service-secret
+                  key: EMAIL_PASSWORD
+            - name: EMAIL_DEFAULT_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: notification-service-secret
+                  key: EMAIL_DEFAULT_SENDER
+                  
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            timeoutSeconds: 3
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "768Mi"
+              cpu: "400m"

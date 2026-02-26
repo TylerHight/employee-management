@@ -1,0 +1,117 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: employee-service
+  
+  # MySQL Database configuration
+  datasource:
+    url: jdbc:mysql://localhost:3308/employee_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: user
+    password: password
+  
+  # JPA/Hibernate configuration
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  
+  # Kafka configuration
+  kafka:
+    bootstrap-servers: kafka:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: employee-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+            value:
+              default:
+                type: com.ibm.fscc.kafka.dto.EmployeeRoleChangeEvent
+
+# Eureka Service Discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: employee-service
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.ibm.fscc.employeeservice: INFO
+    org.springframework.web: INFO
+    org.springframework.context: INFO
+    org.springframework.orm.jpa: INFO
+    org.springframework.transaction: INFO
+    org.hibernate: INFO
+    com.zaxxer.hikari: INFO
+    com.netflix.eureka: DEBUG
+    com.netflix.discovery: DEBUG
+
+# Actuator & Observability
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  
+  # Metrics configuration
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+    tags:
+      application: ${spring.application.name}
+      environment: ${ENVIRONMENT:dev}
+  
+  # Distributed Tracing
+  tracing:
+    sampling:
+      probability: 1.0  # 100% for dev, reduce to 0.1 (10%) in production
+    enabled: true
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# OpenAPI/Swagger Documentation
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  show-actuator: true
+  packages-to-scan: com.ibm.fscc.employeeservice.controller
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json

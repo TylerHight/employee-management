@@ -1,0 +1,51 @@
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Service
+      name: angular-ui
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: LoadBalancer
+
+  - target:
+      kind: Service
+      name: api-gateway
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: LoadBalancer
+
+  - target:
+      kind: Service
+      name: login-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: ClusterIP
+
+  - target:
+      kind: Service
+      name: registration-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: ClusterIP
+
+  - target:
+      kind: Service
+      name: employee-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: ClusterIP
+
+  - target:
+      kind: Service
+      name: notification-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: ClusterIP
