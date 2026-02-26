@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.ibm.fscc</groupId>
-    <artifactId>fscc-common-exception</artifactId>
+    <artifactId>common-exception</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 

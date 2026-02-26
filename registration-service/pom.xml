@@ -77,12 +77,12 @@
         <!-- Internal shared libraries -->
         <dependency>
             <groupId>com.ibm.fscc</groupId>
-            <artifactId>fscc-common-dto</artifactId>
+            <artifactId>common-dto</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.fscc</groupId>
-            <artifactId>fscc-common-exception</artifactId>
+            <artifactId>common-exception</artifactId>
             <version>1.0.0</version>
         </dependency>
 
