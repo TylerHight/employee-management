@@ -1,5 +1,8 @@
 name: Deploy Service
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -149,3 +152,21 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.image_version }}
             ${{ steps.meta.outputs.image_latest }}
+  
+      - name: Update deployment manifest image tag
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          service="${{ steps.meta.outputs.service }}"
+          image="${{ steps.meta.outputs.image_version }}"
+          file="k8/base/${service}/deployment.yaml"
+
+          [[ -f "$file" ]] || { echo "::error::Missing $file"; exit 1; }
+
+          sed -i -E "s|(^[[:space:]]*image:[[:space:]]*docker\.io/tylerhight/${service}:).*|\1${{ steps.meta.outputs.version }}|" "$file"
+
+          echo "Updated image in $file:"
+          grep -n "image:" "$file"
+
+
