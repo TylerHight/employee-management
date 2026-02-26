@@ -131,8 +131,8 @@ jobs:
       - name: Build service JAR
         shell: bash
         run: |
-          set -euo pipefall
-          mvn -f "${{ steps.meta.output.service }}/pom.xml" -DskipTests clean package
+          set -euo pipefail
+          mvn -f "${{ steps.meta.outputs.service }}/pom.xml" -DskipTests clean package
 
       - name: Build and push image
         uses: docker/build-push-action@v6
@@ -142,7 +142,3 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.image_version }}
             ${{ steps.meta.outputs.image_latest }}
-
-
-
-
